@@ -1,7 +1,24 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  mode: 'universal',
+  // mode: 'universal',
+  mode: 'spa',
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'notes',
+        path: '/notes',
+        component: resolve(__dirname, 'components/notes'),
+        children: [
+          {
+            name: 'tasks',
+            path: '/tasks/:id',
+            component: resolve(__dirname, 'components/notes/tasks/_id.vue')
+          }
+        ]
+      })
+    }
+  },
   /*
    ** Headers of the page
    */
