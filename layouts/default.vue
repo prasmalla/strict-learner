@@ -32,11 +32,20 @@
     </v-content>
     <v-footer>
       <span>{{ new Date().getFullYear() }}</span>
+      <v-spacer />
+      <router-link v-if="!loggedIn" to="/login">
+        Login
+      </router-link>
+      <button v-else type="button" class="logoutButton" @click="logout">
+        Logout
+      </button>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { authComputed } from '../plugins/utils'
+
 export default {
   data() {
     return {
@@ -59,6 +68,14 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'strictlearn.in'
+    }
+  },
+  computed: {
+    ...authComputed
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
     }
   }
 }

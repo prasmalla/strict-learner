@@ -1,3 +1,4 @@
+import axios from 'axios'
 import defaultBoard from '../plugins/default-board'
 import { saveStatePlugin, uuid } from '../plugins/utils'
 
@@ -6,7 +7,8 @@ const board = JSON.parse(localStorage.getItem('board')) || defaultBoard
 export const plugins = [saveStatePlugin]
 
 export const state = () => ({
-  board
+  board,
+  user: null
 })
 
 export const mutations = {
@@ -35,6 +37,35 @@ export const mutations = {
 
     const columnToMove = columnList.splice(fromColumnIndex, 1)[0]
     columnList.splice(toColumnIndex, 0, columnToMove)
+  },
+  SET_USER_DATA(state, userData) {
+    state.user = userData
+    localStorage.setItem('user', JSON.stringify(userData))
+    axios.defaults.headers.common.Authorization = `Bearer ${userData.token}`
+  },
+  CLEAR_USER_DATA() {
+    localStorage.removeItem('user')
+    location.href = '/'
+  }
+}
+
+export const actions = {
+  register({ commit }, credentials) {
+    return axios
+      .post(`${process.env.API_URL}/register`, credentials)
+      .then(({ data }) => {
+        commit('SET_USER_DATA', data)
+      })
+  },
+  login({ commit }, credentials) {
+    return axios
+      .post(`${process.env.API_URL}/login`, credentials)
+      .then(({ data }) => {
+        commit('SET_USER_DATA', data)
+      })
+  },
+  logout({ commit }) {
+    commit('CLEAR_USER_DATA')
   }
 }
 
@@ -49,5 +80,8 @@ export const getters = {
         }
       }
     }
+  },
+  loggedIn(state) {
+    return !!state.user
   }
 }

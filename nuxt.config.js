@@ -9,6 +9,7 @@ export default {
         name: 'notes',
         path: '/notes',
         component: resolve(__dirname, 'components/notes'),
+        meta: { requiresAuth: true },
         children: [
           {
             name: 'tasks',
@@ -47,7 +48,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['plugins/protected'],
   /*
    ** Nuxt.js dev-modules
    */
