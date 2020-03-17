@@ -1,7 +1,7 @@
 import { mapGetters } from 'vuex'
 
 export const authComputed = {
-  ...mapGetters(['loggedIn'])
+  ...mapGetters(['isLoggedIn'])
 }
 
 export function uuid() {

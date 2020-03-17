@@ -44,19 +44,16 @@ export default {
     }
   },
   methods: {
-    register() {
-      this.$store
-        .dispatch('register', {
-          name: this.name,
-          email: this.email,
-          password: this.password
-        })
-        .then(() => {
-          this.$router.push({ name: 'notes' })
-        })
-        .catch((err) => {
-          this.errors = err.response.data.errors
-        })
+    async register() {
+      try {
+        await this.$fireAuth.createUserWithEmailAndPassword(
+          this.email,
+          this.password
+        )
+        this.$router.push({ name: 'notes' })
+      } catch {
+        this.errors = ['Invalid Credentials / Account Not Found']
+      }
     }
   }
 }

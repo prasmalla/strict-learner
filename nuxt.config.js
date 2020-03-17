@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+require('dotenv').config()
 
 export default {
   // mode: 'universal',
@@ -49,6 +50,7 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: ['plugins/protected'],
+
   /*
    ** Nuxt.js dev-modules
    */
@@ -65,8 +67,29 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/firebase'
   ],
+
+  firebase: {
+    config: {
+      apiKey: process.env.F_API_KEY,
+      authDomain: process.env.F_AUTH_DOMAIN,
+      databaseURL: process.env.F_DATABASE_URL,
+      projectId: process.env.F_PROJECT_ID,
+      storageBucket: process.env.F_STORAGE_BUCKET,
+      messagingSenderId: process.env.F_MESSAGING_SENDER_ID,
+      appId: process.env.F_APP_ID,
+      measurementId: process.env.F_MEASUREMENT_ID
+    },
+    services: {
+      auth: {
+        initialize: {
+          onAuthStateChangedAction: 'onAuthStateChanged'
+        }
+      }
+    }
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
@@ -100,6 +123,16 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {},
+    babel: {
+      presets: [
+        [
+          '@nuxt/babel-preset-app',
+          {
+            corejs: { version: 3 }
+          }
+        ]
+      ]
+    }
   }
 }

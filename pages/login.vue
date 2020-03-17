@@ -34,18 +34,16 @@ export default {
     }
   },
   methods: {
-    login() {
-      this.$store
-        .dispatch('login', {
-          email: this.email,
-          password: this.password
-        })
-        .then(() => {
-          this.$router.push({ name: 'notes' })
-        })
-        .catch((err) => {
-          this.error = err.response.data.error
-        })
+    async login() {
+      try {
+        await this.$fireAuth.signInWithEmailAndPassword(
+          this.email,
+          this.password
+        )
+        this.$router.push({ name: 'notes' })
+      } catch {
+        this.error = 'Invalid Credentials / Account Not Found'
+      }
     }
   }
 }

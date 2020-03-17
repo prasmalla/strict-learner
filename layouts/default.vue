@@ -33,7 +33,7 @@
     <v-footer>
       <span>{{ new Date().getFullYear() }}</span>
       <v-spacer />
-      <router-link v-if="!loggedIn" to="/login">
+      <router-link v-if="!isLoggedIn" to="/login">
         Login
       </router-link>
       <button v-else type="button" class="logoutButton" @click="logout">
@@ -74,8 +74,11 @@ export default {
     ...authComputed
   },
   methods: {
-    logout() {
-      this.$store.dispatch('logout')
+    async logout() {
+      try {
+        await this.$fireAuth.signOut()
+        this.$router.push('/')
+      } catch {}
     }
   }
 }
