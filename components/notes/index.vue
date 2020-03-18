@@ -28,6 +28,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import axios from 'axios'
 import BoardColumn from '@/components/BoardColumn'
 export default {
   components: { BoardColumn },
@@ -43,6 +44,13 @@ export default {
     }
   },
   mounted() {
+    axios
+      .get('http://localhost:5001/sympl-5850a/us-central1/getBoards')
+      .then(({ data }) =>
+        this.$store.commit('CREATE_COLUMN', {
+          name: data[0].title
+        })
+      )
     this.$root.$on('task', (task) => {
       this.$router.push({ name: 'tasks', params: { id: task.id } })
     })

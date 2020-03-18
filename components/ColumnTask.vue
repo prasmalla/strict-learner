@@ -9,11 +9,14 @@
       }"
     >
       <span class="w-full flex-no-shrink font-bold" @click="goToTask(task)">
-        {{ task.name }}
+        {{ task.name }}<br />
+        <small
+          v-if="task.description"
+          class="w-full flex-no-shrink mt-1 text-sm"
+        >
+          {{ task.description }}
+        </small>
       </span>
-      <p v-if="task.description" class="w-full flex-no-shrink mt-1 text-sm">
-        {{ task.description }}
-      </p>
     </AppDrag>
   </AppDrop>
 </template>
